@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>covid_rapide</title>
+
+		<link rel="icon" type="image/png" href="../src/favicons/apple-touch-icon.png" />
+		<link rel="apple-touch-icon" href="../src/favicons/apple-touch-icon.png"/>
+	
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1, width=device-width, height=device-height">
+
+		<style>
+
+			html, body {
+				height: 100%;
+				margin: 0;
+				background-color: #AAAAAA;
+			}
+
+			form {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-around;
+				align-items: center;
+				margin: 0 auto;
+				width: 450px;
+				max-width: 90%;
+				height: 100%;
+				max-height: 600px;
+			}
+
+			input, select {
+				display: block;
+				box-sizing: border-box;
+				margin: 0 auto;
+				width: 100%;
+				font-size: 1.15em;
+			}
+
+			select:invalid {
+				color: gray;
+			}
+
+			option {
+				color: black;
+			}
+
+		</style>
+
+		<script>
+
+			window.addEventListener("load", async () => {
+
+				let form = document.createElement("form");
+				form.action = "../";
+				form.method = "get";
+				document.body.appendChild(form);
+
+				const genInput = (name, prompt, cmp) => {
+					
+					let input = document.createElement("input");
+					input.setAttribute("type", "text");
+					input.setAttribute("id", cmp);
+					input.setAttribute("name", name);
+					input.setAttribute("required", "required");
+					input.setAttribute("placeholder", prompt);
+					if(cmp) input.setAttribute("autocomplete", cmp);
+					return input;
+
+				};
+
+				const genSelect = (name, prompt) => {
+
+					let select = document.createElement("select");
+					select.setAttribute("name", name);
+					select.setAttribute("required", "required");
+					form.appendChild(select);
+
+					let placeholder = document.createElement("option");
+					placeholder.setAttribute("disabled", "disabled");
+					placeholder.setAttribute("selected", "selected");
+					placeholder.setAttribute("hidden", "hidden");
+					placeholder.value = "";
+					placeholder.text = prompt;
+					select.appendChild(placeholder);
+
+					let options = name === "motif" ?
+					["travail", "sante", "famille", "handicap", "convocation", "missions", "transits", "animaux"]
+					: [1, 2, 5, 10, 15, 20, 30, 45, 60]
+					
+					options.forEach(motif => {
+
+						let option = document.createElement("option");
+						option.value = option.text = motif;
+						select.appendChild(option);
+
+					});
+
+					return select;
+
+				};
+
+				[
+					{name: "firstname", prompt: "Prénom", cmp: "given-name"}, 
+					{name: "lastname", prompt: "Nom", cmp: "family-name"}, 
+					{name: "birthday", prompt: "Date de naissance", cmp: "birthday"}, 
+					{name: "placeofbirth", prompt: "Ville de naissance", cmp: "bcity"}, 
+					{name: "address", prompt: "Adresse", cmp: "address-level1"}, 
+					{name: "zipcode", prompt: "Code postal", cmp: "postal-code"}, 
+					{name: "city", prompt: "Ville", cmp: "address-level2"}, 
+					{name: "motif", prompt: "Motif", cmp: "covid-motif"}, 
+					{name: "minutes", prompt: "Antidatage (minutes)", cmp: "covid-time"}
+				]
+				.forEach(field => form.appendChild((field.name === "motif" || field.name === "minutes" ? genSelect : genInput)(field.name, field.prompt, field.cmp)));
+
+				let nodl = genInput("no", "");
+				nodl.setAttribute("type", "hidden");
+				nodl.value = 1;
+				form.appendChild(nodl);
+
+				let submit = document.createElement("input");
+				submit.setAttribute("type", "submit");
+				submit.value = "OK";
+				form.appendChild(submit);
+
+			});
+
+		</script>
+		
+	</head>
+
+	<body>
+		
+	</body>
+
+</html>

@@ -1,5 +1,6 @@
-import { generateQR } from './util'
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
+import { generateQR } from './util.js'
+
+const { PDFDocument, StandardFonts, rgb } = PDFLib
 
 const ys = {
   travail: 540,
@@ -12,8 +13,9 @@ const ys = {
   animaux: 330,
 }
 
-export async function generatePdf (profile, reasons, pdfBase) {
-  const creationInstant = new Date()
+export async function generatePdf (profile, reasons, pdfBase, fakeDate) {
+  fakeDate.subtract(5, "minutes");
+  const creationInstant = fakeDate.toDate()
   const creationDate = creationInstant.toLocaleDateString('fr-FR')
   const creationHour = creationInstant
     .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
